@@ -15,22 +15,18 @@
  */
 package com.alibaba.csp.sentinel.slots.clusterbuilder;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.alibaba.csp.sentinel.Env;
 import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.Env;
 import com.alibaba.csp.sentinel.context.Context;
 import com.alibaba.csp.sentinel.context.ContextUtil;
-import com.alibaba.csp.sentinel.node.ClusterNode;
-import com.alibaba.csp.sentinel.node.DefaultNode;
-import com.alibaba.csp.sentinel.node.IntervalProperty;
-import com.alibaba.csp.sentinel.node.Node;
-import com.alibaba.csp.sentinel.node.SampleCountProperty;
+import com.alibaba.csp.sentinel.node.*;
 import com.alibaba.csp.sentinel.slotchain.AbstractLinkedProcessorSlot;
 import com.alibaba.csp.sentinel.slotchain.ProcessorSlotChain;
 import com.alibaba.csp.sentinel.slotchain.ResourceWrapper;
 import com.alibaba.csp.sentinel.slotchain.StringResourceWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -44,6 +40,8 @@ import com.alibaba.csp.sentinel.slotchain.StringResourceWrapper;
  * </p>
  *
  * @author jialiang.linjl
+ *
+ * 则用于存储资源的统计信息以及调用者信息，例如该资源的 RT, QPS, thread count 等等，这些信息将用作为多维度限流，降级的依据；
  */
 public class ClusterBuilderSlot extends AbstractLinkedProcessorSlot<DefaultNode> {
 

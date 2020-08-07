@@ -15,13 +15,13 @@
  */
 package com.alibaba.csp.sentinel.transport.heartbeat.client;
 
+import com.alibaba.csp.sentinel.config.SentinelConfig;
+import com.alibaba.csp.sentinel.util.StringUtil;
+
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.alibaba.csp.sentinel.config.SentinelConfig;
-import com.alibaba.csp.sentinel.util.StringUtil;
 
 /**
  * Simple HTTP request representation.

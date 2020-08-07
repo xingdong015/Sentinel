@@ -15,10 +15,6 @@
  */
 package com.alibaba.csp.sentinel.transport.heartbeat;
 
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.csp.sentinel.log.RecordLog;
 import com.alibaba.csp.sentinel.transport.HeartbeatSender;
 import com.alibaba.csp.sentinel.transport.config.TransportConfig;
@@ -26,6 +22,10 @@ import com.alibaba.csp.sentinel.transport.heartbeat.client.SimpleHttpClient;
 import com.alibaba.csp.sentinel.transport.heartbeat.client.SimpleHttpRequest;
 import com.alibaba.csp.sentinel.transport.heartbeat.client.SimpleHttpResponse;
 import com.alibaba.csp.sentinel.util.StringUtil;
+
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The heartbeat sender provides basic API for sending heartbeat request to provided target.

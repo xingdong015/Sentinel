@@ -15,9 +15,6 @@
  */
 package com.alibaba.csp.sentinel.slots.nodeselector;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.csp.sentinel.Env;
 import com.alibaba.csp.sentinel.context.Context;
 import com.alibaba.csp.sentinel.context.ContextUtil;
@@ -26,6 +23,9 @@ import com.alibaba.csp.sentinel.node.DefaultNode;
 import com.alibaba.csp.sentinel.node.EntranceNode;
 import com.alibaba.csp.sentinel.slotchain.AbstractLinkedProcessorSlot;
 import com.alibaba.csp.sentinel.slotchain.ResourceWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * </p>
@@ -122,6 +122,8 @@ import com.alibaba.csp.sentinel.slotchain.ResourceWrapper;
  * @author jialiang.linjl
  * @see EntranceNode
  * @see ContextUtil
+ *
+ * 负责收集资源的路径，并将这些资源的调用路径，以树状结构存储起来，用于根据调用路径来限流降级
  */
 public class NodeSelectorSlot extends AbstractLinkedProcessorSlot<Object> {
 

@@ -20,6 +20,9 @@ import com.alibaba.csp.sentinel.context.Context;
 /**
  * @author qinan.qn
  * @author jialiang.linjl
+ *
+ * AbstractLinkedProcessorSlot
+ * AbstractLinkedProcessorSlot是一种责任链的设计，每个对象中都有一个next属性，指向的是另一个AbstractLinkedProcessorSlot对象
  */
 public abstract class AbstractLinkedProcessorSlot<T> implements ProcessorSlot<T> {
 
