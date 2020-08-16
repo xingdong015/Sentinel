@@ -36,7 +36,7 @@ public class FlowQpsDemo {
 
     private static final String KEY = "abc";
 
-    private static AtomicInteger pass = new AtomicInteger();
+    private static AtomicInteger pass  = new AtomicInteger();
     private static AtomicInteger block = new AtomicInteger();
     private static AtomicInteger total = new AtomicInteger();
 
@@ -60,12 +60,16 @@ public class FlowQpsDemo {
 
     private static void initFlowQpsRule() {
         List<FlowRule> rules = new ArrayList<FlowRule>();
-        FlowRule rule1 = new FlowRule();
+        FlowRule       rule1 = new FlowRule();
         rule1.setResource(KEY);
         // set limit qps to 20
         rule1.setCount(20);
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        rule1.setLimitApp("default");
+        rule1.setStrategy(RuleConstant.STRATEGY_DIRECT);
+        rule1.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_DEFAULT);
+        //default：表示不区分调用者，来自任何调用者的请求都将进行限流统计。如果这个资源名的调用总和超过了这条规则定义的阈值，则触发限流
+
+        rule1.setLimitApp("default");//根据调用方进行限流
         rules.add(rule1);
         FlowRuleManager.loadRules(rules);
     }
@@ -92,29 +96,29 @@ public class FlowQpsDemo {
             System.out.println("begin to statistic!!!");
 
             long oldTotal = 0;
-            long oldPass = 0;
+            long oldPass  = 0;
             long oldBlock = 0;
             while (!stop) {
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                 }
-                long globalTotal = total.get();
+                long globalTotal    = total.get();
                 long oneSecondTotal = globalTotal - oldTotal;
                 oldTotal = globalTotal;
 
-                long globalPass = pass.get();
+                long globalPass    = pass.get();
                 long oneSecondPass = globalPass - oldPass;
                 oldPass = globalPass;
 
-                long globalBlock = block.get();
+                long globalBlock    = block.get();
                 long oneSecondBlock = globalBlock - oldBlock;
                 oldBlock = globalBlock;
 
                 System.out.println(seconds + " send qps is: " + oneSecondTotal);
                 System.out.println(TimeUtil.currentTimeMillis() + ", total:" + oneSecondTotal
-                    + ", pass:" + oneSecondPass
-                    + ", block:" + oneSecondBlock);
+                        + ", pass:" + oneSecondPass
+                        + ", block:" + oneSecondBlock);
 
                 if (seconds-- <= 0) {
                     stop = true;
@@ -124,7 +128,7 @@ public class FlowQpsDemo {
             long cost = System.currentTimeMillis() - start;
             System.out.println("time cost: " + cost + " ms");
             System.out.println("total:" + total.get() + ", pass:" + pass.get()
-                + ", block:" + block.get());
+                    + ", block:" + block.get());
             System.exit(0);
         }
     }

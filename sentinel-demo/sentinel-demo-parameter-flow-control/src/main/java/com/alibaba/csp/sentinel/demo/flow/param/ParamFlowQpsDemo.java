@@ -15,12 +15,12 @@
  */
 package com.alibaba.csp.sentinel.demo.flow.param;
 
-import java.util.Collections;
-
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowItem;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRuleManager;
+
+import java.util.Collections;
 
 /**
  * This demo demonstrates flow control by frequent ("hot spot") parameters.
@@ -61,8 +61,8 @@ public class ParamFlowQpsDemo {
         // Here we add an exception item. That means: QPS threshold of entries with parameter `PARAM_B` (type: int)
         // in index 0 will be 10, rather than the global threshold (5).
         ParamFlowItem item = new ParamFlowItem().setObject(String.valueOf(PARAM_B))
-            .setClassType(int.class.getName())
-            .setCount(10);
+                .setClassType(int.class.getName())
+                .setCount(10);
         rule.setParamFlowItemList(Collections.singletonList(item));
         ParamFlowRuleManager.loadRules(Collections.singletonList(rule));
     }

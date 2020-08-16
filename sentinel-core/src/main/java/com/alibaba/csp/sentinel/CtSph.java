@@ -127,7 +127,7 @@ public class CtSph implements Sph {
             return new CtEntry(resourceWrapper, null, context);
         }
         // 获取该资源对应的SlotChain
-        //根据包装过的资源对象获取对应的SlotChain
+        //NodeSelectorSlot
         ProcessorSlot<Object> chain = lookProcessChain(resourceWrapper);
 
         /*

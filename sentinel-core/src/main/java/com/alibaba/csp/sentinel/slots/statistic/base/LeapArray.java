@@ -15,13 +15,13 @@
  */
 package com.alibaba.csp.sentinel.slots.statistic.base;
 
+import com.alibaba.csp.sentinel.util.AssertUtil;
+import com.alibaba.csp.sentinel.util.TimeUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.concurrent.locks.ReentrantLock;
-
-import com.alibaba.csp.sentinel.util.AssertUtil;
-import com.alibaba.csp.sentinel.util.TimeUtil;
 
 /**
  * <p>
@@ -54,8 +54,8 @@ public abstract class LeapArray<T> {
     /**
      * The total bucket count is: {@code sampleCount = intervalInMs / windowLengthInMs}.
      *
-     * @param sampleCount bucket count of the sliding window
-     * @param intervalInMs    the total time interval of this {@link LeapArray} in milliseconds
+     * @param sampleCount  bucket count of the sliding window
+     * @param intervalInMs the total time interval of this {@link LeapArray} in milliseconds
      */
     public LeapArray(int sampleCount, int intervalInMs) {
         AssertUtil.isTrue(sampleCount > 0, "bucket count is invalid: " + sampleCount);
@@ -63,7 +63,9 @@ public abstract class LeapArray<T> {
         AssertUtil.isTrue(intervalInMs % sampleCount == 0, "time span needs to be evenly divided");
 
         this.windowLengthInMs = intervalInMs / sampleCount;
+        //默认为1000 统计的间隔
         this.intervalInMs = intervalInMs;
+        // 时间窗口的采样个数，默认为2个采样窗口
         this.sampleCount = sampleCount;
 
         this.array = new AtomicReferenceArray<WindowWrap<T>>(sampleCount);
@@ -97,7 +99,7 @@ public abstract class LeapArray<T> {
     protected int calculateTimeIdx(/*@Valid*/ long timeMillis) {
         long timeId = timeMillis / windowLengthInMs;
         // Calculate current index so we can map the timestamp to the leap array.
-        return (int)(timeId % array.length());
+        return (int) (timeId % array.length());
     }
 
     protected long calculateWindowStart(/*@Valid*/ long timeMillis) {
@@ -209,7 +211,7 @@ public abstract class LeapArray<T> {
             return null;
         }
         long timeId = (timeMillis - windowLengthInMs) / windowLengthInMs;
-        int idx = (int)(timeId % array.length());
+        int  idx    = (int) (timeId % array.length());
         timeMillis = timeMillis - windowLengthInMs;
         WindowWrap<T> wrap = array.get(idx);
 
@@ -271,7 +273,7 @@ public abstract class LeapArray<T> {
      * @return valid bucket list for entire sliding window.
      */
     public List<WindowWrap<T>> list() {
-        int size = array.length();
+        int                 size   = array.length();
         List<WindowWrap<T>> result = new ArrayList<WindowWrap<T>>(size);
 
         for (int i = 0; i < size; i++) {
@@ -292,7 +294,7 @@ public abstract class LeapArray<T> {
      * @return aggregated value list for entire sliding window
      */
     public List<T> values() {
-        int size = array.length();
+        int     size   = array.length();
         List<T> result = new ArrayList<T>(size);
 
         for (int i = 0; i < size; i++) {
