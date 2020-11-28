@@ -46,7 +46,7 @@ import java.util.Map;
  * }
  * ContextUtil.exit();
  * </pre>
- *
+ * <p>
  * Above code will generate the following invocation structure in memory:
  *
  * <pre>
@@ -93,7 +93,7 @@ import java.util.Map;
  *    }
  *    ContextUtil.exit();
  * </pre>
- *
+ * <p>
  * Above code will generate the following invocation structure in memory:
  *
  * <pre>
@@ -122,7 +122,7 @@ import java.util.Map;
  * @author jialiang.linjl
  * @see EntranceNode
  * @see ContextUtil
- *
+ * <p>
  * 负责收集资源的路径，并将这些资源的调用路径，以树状结构存储起来，用于根据调用路径来限流降级
  */
 public class NodeSelectorSlot extends AbstractLinkedProcessorSlot<Object> {
@@ -134,7 +134,7 @@ public class NodeSelectorSlot extends AbstractLinkedProcessorSlot<Object> {
 
     @Override
     public void entry(Context context, ResourceWrapper resourceWrapper, Object obj, int count, boolean prioritized, Object... args)
-        throws Throwable {
+            throws Throwable {
         /*
          * It's interesting that we use context name rather resource name as the map key.
          *
@@ -165,7 +165,7 @@ public class NodeSelectorSlot extends AbstractLinkedProcessorSlot<Object> {
                     map = cacheMap;
                 }
                 // Build invocation tree
-                ((DefaultNode)context.getLastNode()).addChild(node);
+                ((DefaultNode) context.getLastNode()).addChild(node);
             }
         }
 

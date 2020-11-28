@@ -15,12 +15,12 @@
  */
 package com.alibaba.csp.sentinel.slots.system;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
-
+import com.alibaba.csp.sentinel.Constants;
 import com.alibaba.csp.sentinel.log.RecordLog;
 import com.alibaba.csp.sentinel.util.StringUtil;
-import com.alibaba.csp.sentinel.Constants;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 
 /**
  * @author jialiang.linjl
@@ -63,6 +63,12 @@ public class SystemStatusListener implements Runnable {
         } catch (Throwable e) {
             RecordLog.info("could not get system error ", e);
         }
+    }
+
+    public static void main(String[] args) {
+        OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
+        double                systemLoadAverage     = operatingSystemMXBean.getSystemLoadAverage();
+        System.out.println(systemLoadAverage);
     }
 
 }

@@ -15,19 +15,19 @@
  */
 package com.alibaba.csp.sentinel.demo.flow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.alibaba.csp.sentinel.util.TimeUtil;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.csp.sentinel.util.TimeUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>
@@ -39,7 +39,7 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
  * sentinel will calculate the waiting time for this request. If the waiting
  * time is longer than the {@link FlowRule#maxQueueingTimeMs} set in the rule,
  * the request will be rejected immediately.
- *
+ * <p>
  * This method is widely used for pulsed flow. When a large amount of flow
  * comes, we don't want to pass all these requests at once, which may drag the
  * system down. We can make the system handle these requests at a steady pace by
@@ -55,7 +55,7 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
  * <p>
  * {@link #simulatePulseFlow()} simulates 100 requests that arrives at almost the
  * same time. All these 100 request are passed at a fixed interval.
- *
+ * <p>
  * <p/>
  * Run this demo, results are as follows:
  * <pre>
@@ -72,7 +72,7 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
  * done
  * total pass:100, total block:0
  * </pre>
- *
+ * <p>
  * Then we invoke {@link #initDefaultFlowRule()} to set rules with default behavior, and only 10
  * requests will be allowed to pass, other requests will be rejected immediately.
  * <p/>
@@ -101,23 +101,23 @@ public class PaceFlowDemo {
 
     private static volatile CountDownLatch countDown;
 
-    private static final Integer requestQps = 100;
-    private static final Integer count = 10;
-    private static final AtomicInteger done = new AtomicInteger();
-    private static final AtomicInteger pass = new AtomicInteger();
-    private static final AtomicInteger block = new AtomicInteger();
+    private static final Integer       requestQps = 100;
+    private static final Integer       count      = 2;
+    private static final AtomicInteger done       = new AtomicInteger();
+    private static final AtomicInteger pass       = new AtomicInteger();
+    private static final AtomicInteger block      = new AtomicInteger();
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println("pace behavior");
-        countDown = new CountDownLatch(1);
-        initPaceFlowRule();
-        simulatePulseFlow();
-        countDown.await();
+//        System.out.println("pace behavior");
+//        countDown = new CountDownLatch(1);
+//        initPaceFlowRule();
+//        simulatePulseFlow();
+//        countDown.await();
+//
+//        System.out.println("done");
+//        System.out.println("total pass:" + pass.get() + ", total block:" + block.get());
 
-        System.out.println("done");
-        System.out.println("total pass:" + pass.get() + ", total block:" + block.get());
-
-        System.out.println();
+//        System.out.println();
         System.out.println("default behavior");
         TimeUnit.SECONDS.sleep(5);
         done.set(0);
@@ -133,8 +133,9 @@ public class PaceFlowDemo {
     }
 
     private static void initPaceFlowRule() {
+        //每10ms通过一个请求
         List<FlowRule> rules = new ArrayList<FlowRule>();
-        FlowRule rule1 = new FlowRule();
+        FlowRule       rule1 = new FlowRule();
         rule1.setResource(KEY);
         rule1.setCount(count);
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
@@ -152,7 +153,7 @@ public class PaceFlowDemo {
 
     private static void initDefaultFlowRule() {
         List<FlowRule> rules = new ArrayList<FlowRule>();
-        FlowRule rule1 = new FlowRule();
+        FlowRule       rule1 = new FlowRule();
         rule1.setResource(KEY);
         rule1.setCount(count);
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
@@ -169,8 +170,8 @@ public class PaceFlowDemo {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    long startTime = TimeUtil.currentTimeMillis();
-                    Entry entry = null;
+                    long  startTime = TimeUtil.currentTimeMillis();
+                    Entry entry     = null;
                     try {
                         entry = SphU.entry(KEY);
                     } catch (BlockException e1) {
@@ -183,7 +184,7 @@ public class PaceFlowDemo {
                             pass.incrementAndGet();
                             long cost = TimeUtil.currentTimeMillis() - startTime;
                             System.out.println(
-                                TimeUtil.currentTimeMillis() + " one request pass, cost " + cost + " ms");
+                                    TimeUtil.currentTimeMillis() + " one request pass, cost " + cost + " ms");
                         }
                     }
 

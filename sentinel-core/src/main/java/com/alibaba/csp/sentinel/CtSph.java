@@ -188,8 +188,6 @@ public class CtSph implements Sph {
      * @return {@link ProcessorSlotChain} of the resource
      */
     ProcessorSlot<Object> lookProcessChain(ResourceWrapper resourceWrapper) {
-        //该方法使用了一个HashMap做了缓存,key是资源对象。这里加了锁，并且做了 double check
-        //具体构造chain的方法是通过： SlotChainProvider.newSlotChain()
         ProcessorSlotChain chain = chainMap.get(resourceWrapper);
         if (chain == null) {
             synchronized (LOCK) {
@@ -200,6 +198,7 @@ public class CtSph implements Sph {
                         return null;
                     }
 
+                    //这里chainMap为啥不用ConcurrentHashMap,而是使用用写时复制的方式，目的是为了提升并发,这里的chainMap还有可能别其他线程(没有LOCK锁的)
                     chain = SlotChainProvider.newSlotChain();
                     Map<ResourceWrapper, ProcessorSlotChain> newMap = new HashMap<ResourceWrapper, ProcessorSlotChain>(
                         chainMap.size() + 1);
